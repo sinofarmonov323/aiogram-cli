@@ -80,7 +80,7 @@ def main():
     parser = argparse.ArgumentParser(prog="aiogram")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    init_parser = subparsers.add_parser("init", help="Initialize project")
+    init_parser = subparsers.add_parser("init", help="Initialize project with template")
     init_parser.add_argument("path", nargs="?", default=".", help="Path to initialize")
     init_parser.set_defaults(func=init)
 
