@@ -68,8 +68,9 @@ def init(args):
 def helpp(args):
     print("""USAGE:
 aiogram:
-    init - initialize the project
+    init [project-name] - initialize the project
     help - get help
+    run [filename] - runs the file with auto reload
 """)
 
 def run(args):
