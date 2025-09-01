@@ -12,7 +12,7 @@ setup(
     description="bu aiogram kutubxonasi uchun aiogram cli (command line tool)",
     entry_points={
         'console_scripts': [
-            'aiogram = aiogram_cli.cli:main',
+            'aiogram-cli = aiogram_cli.cli:main',
         ],
     },
     classifiers=[

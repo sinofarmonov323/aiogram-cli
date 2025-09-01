@@ -29,13 +29,6 @@ class RestartOnChange(FileSystemEventHandler):
             print(f"⚡ Change detected in {self.file}, restarting...")
             self.run_file()
 
-class Open:
-    def __init__(self, path: str):
-        self.path = open(path, "+a", encoding="utf-8")
-
-    def edit(self, text: str):
-        pass
-
 
 def watcher(file: str):
     file_path = Path(file).resolve()
@@ -74,7 +67,7 @@ def init(args):
 
 def helpp(args):
     print("""USAGE:
-aiogram:
+aiogram-ali:
     init [project-name] - initialize the project
     help - get help
     run [filename] - runs the file with auto reload
@@ -84,11 +77,13 @@ def run(args):
     watcher(args.path)
 
 def handler_func(args):
-    print("not ready yet. Will be ready soon ;)")
+    with open("handlers/users/start.py", "+a") as file:
+        read = file.read()
+        ready = read.replace("#fftch", "member = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=message.from_user.id)")
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="aiogram")
+    parser = argparse.ArgumentParser(prog="aiogram-cli")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     init_parser = subparsers.add_parser("init", help="Initialize project with template")
