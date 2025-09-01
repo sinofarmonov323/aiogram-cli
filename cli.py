@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import shutil
 import time
 
@@ -76,30 +77,53 @@ aiogram-ali:
 def run(args):
     watcher(args.path)
 
-def handler_func(args):
-    with open("handlers/users/start.py", "+a") as file:
-        read = file.read()
-        ready = read.replace("#fftch", "member = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=message.from_user.id)")
+def handler(args):
+    name = args.name
+    if name == "mandatory-follow-to-channel":
+        with open("bot/handlers/users/start.py", "r", encoding="utf-8") as f:
+            code = f.read()
+        print(code)
+        pattern = r"(# <aiogram-cli:check-sub>)(.*?)(# </aiogram-cli:check-sub>)"
+        injection = """# <aiogram-cli:check-sub>
+        if not await check_subscription(message):
+            return await message.answer("Please subscribe to the channel first!")
 
+        await message.answer(f"Salom {message.from_user.full_name}")
+        # </aiogram-cli:check-sub>"""
+
+        new_code = re.sub(pattern, injection, code, flags=re.S)
+        with open("bot/handlers/users/start.py", "w", encoding="utf-8") as f:
+            f.write(new_code)
+        print(f"handler {name} succesfully added")
+    else:
+        print(f"handler '{name}' not found")
 
 def main():
     parser = argparse.ArgumentParser(prog="aiogram-cli")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    # init
     init_parser = subparsers.add_parser("init", help="Initialize project with template")
     init_parser.add_argument("path", nargs="?", default=".", help="Path to initialize")
     init_parser.set_defaults(func=init)
 
+    # help
     help_parser = subparsers.add_parser("help", help="get help")
     help_parser.set_defaults(func=helpp)
 
+    # run
     watcher = subparsers.add_parser("run", help="runs the file with auto reload")
     watcher.add_argument("path", nargs="?", help="enter path to file name to run")
     watcher.set_defaults(func=run)
 
-    handler = subparsers.add_parser("handler", help="adds new handler to your code")
-    handler.add_argument("handler", nargs="?", help="enter the name of the handler")
-    handler.set_defaults(func=handler_func)
+    # add group
+    add_parser = subparsers.add_parser("add", help="Add new components")
+    add_sub = add_parser.add_subparsers(dest="add_cmd", required=True)
+
+    # add handler
+    handler_parser = add_sub.add_parser("handler", help="Add new handler")
+    handler_parser.add_argument("name", help="Name of the handler")
+    handler_parser.set_defaults(func=handler)
 
     args = parser.parse_args()
     args.func(args)
