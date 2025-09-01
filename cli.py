@@ -29,6 +29,13 @@ class RestartOnChange(FileSystemEventHandler):
             print(f"⚡ Change detected in {self.file}, restarting...")
             self.run_file()
 
+class Open:
+    def __init__(self, path: str):
+        self.path = open(path, "+a", encoding="utf-8")
+
+    def edit(self, text: str):
+        pass
+
 
 def watcher(file: str):
     file_path = Path(file).resolve()
@@ -64,6 +71,9 @@ def init(args):
         shutil.move(src_path, dst_path)
     time.sleep(0.5)
     shutil.rmtree(source_dir)
+    with open(f".project", "w", encoding="utf-8") as file:
+        file.write(f"{args.path}")
+    print(".project file is created. Please do not delete or move it to another place")
 
 def helpp(args):
     print("""USAGE:
@@ -75,6 +85,9 @@ aiogram:
 
 def run(args):
     watcher(args.path)
+
+def handler_func(args):
+    print("not ready yet. Will be ready soon ;)")
 
 
 def main():
@@ -91,6 +104,10 @@ def main():
     watcher = subparsers.add_parser("run", help="runs the file with auto reload")
     watcher.add_argument("path", nargs="?", help="enter path to file name to run")
     watcher.set_defaults(func=run)
+
+    handler = subparsers.add_parser("handler", help="adds new handler to your code")
+    handler.add_argument("handler", nargs="?", help="enter the name of the handler")
+    handler.set_defaults(func=handler_func)
 
     args = parser.parse_args()
     args.func(args)
