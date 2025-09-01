@@ -4,9 +4,9 @@ setup(
     name="aiogram_cli",
     version="1.0.0",
     packages=find_packages(),
-    # install_requires=[
-        # "watchdog"
-    # ],
+    install_requires=[
+        "watchdog"
+    ],
     url="https://github.com/sinofarmonov323/aiogram-cli",
     author="https://t.me/jackson_rodger",
     description="bu aiogram kutubxonasi uchun aiogram cli (command line tool)",
