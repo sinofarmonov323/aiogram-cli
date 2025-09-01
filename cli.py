@@ -71,8 +71,6 @@ def init(args):
         shutil.move(src_path, dst_path)
     time.sleep(0.5)
     shutil.rmtree(source_dir)
-    with open(f".project", "w", encoding="utf-8") as file:
-        file.write(f"{args.path}")
 
 def helpp(args):
     print("""USAGE:
