@@ -73,7 +73,6 @@ def init(args):
     shutil.rmtree(source_dir)
     with open(f".project", "w", encoding="utf-8") as file:
         file.write(f"{args.path}")
-    print(".project file is created. Please do not delete or move it to another place")
 
 def helpp(args):
     print("""USAGE:
